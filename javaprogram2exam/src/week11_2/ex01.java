@@ -1,10 +1,29 @@
 package week11_2;
 
-public class ex01 {
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+class Buffer {
+	private int data;
+	private boolean empty = true;
+	
+	public synchronized int get() {
+		while(empty) {
+			try {
+				wait();
+			} catch(Exception e) {}
+		}
+				empty = true;
+				notifyAll();
+				return data;
+			}
+			
+	public synchronized void put(int data) {
+		while(!empty) {
+			try {
+				wait();
+			} catch(Exception e) {}
+		}
+		empty = false;
+		this.data = data;
+		notifyAll();
+		}
 	}
-
-}
+	
